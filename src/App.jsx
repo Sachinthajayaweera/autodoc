@@ -1,8 +1,9 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-// Component import
+// Component imports
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
@@ -12,12 +13,10 @@ import AppStoreBanner from "./components/AppStoreBanner/AppStoreBanner";
 import Contact from "./components/Contact/Contact";
 import Testimonial from "./components/Testimonial/Testimonial";
 import Footer from "./components/Footer/Footer";
+import AddReview from './components/Testimonial/AddReview';
 
 const App = () => {
-  // dark mode start
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
-  );
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const element = document.documentElement;
 
   useEffect(() => {
@@ -29,9 +28,8 @@ const App = () => {
       localStorage.setItem("theme", "light");
     }
   }, [theme]);
-  // dark mode end
 
-  React.useEffect(() => {
+  useEffect(() => {
     AOS.init({
       offset: 100,
       duration: 800,
@@ -40,18 +38,28 @@ const App = () => {
     });
     AOS.refresh();
   }, []);
+
   return (
-    <div className="bg-white dark:bg-black dark:text-white text-black overflow-x-hidden">
-      <Navbar theme={theme} setTheme={setTheme} />
-      <Hero theme={theme} />
-      <About />
-      <Services />
-      <ServiceList />
-      <Testimonial />
-      <AppStoreBanner />
-      <Contact />
-      <Footer />
-    </div>
+    <Router>
+      <div className="bg-white dark:bg-black dark:text-white text-black overflow-x-hidden">
+        <Navbar theme={theme} setTheme={setTheme} />
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Hero theme={theme} />
+              <About />
+              <Services />
+              <ServiceList />
+              <Testimonial />
+              <AppStoreBanner />
+              <Contact />
+              <Footer />
+            </>
+          } />
+          <Route path="/add-review" element={<AddReview />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
