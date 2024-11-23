@@ -24,7 +24,7 @@ const carList = [
   },
 ];
 
-const CarList = () => {
+const ServiceList = () => {
   return (
     <div className="pb-24">
       <div className="container">
@@ -35,11 +35,8 @@ const CarList = () => {
         >
           Our Services
         </h1>
-        <p data-aos="fade-up" aos-delay="400" className="text-sm pb-10">
-          efekdlejeojpldjepofjpldfjepfoejpojfpweofjweplejfepofjwpowejp
-          dfgdgpsdgksdgpsdg
-        </p>
-        {/* Car listing */}
+        
+        {/* Service listing */}
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16">
             {carList.map((data) => (
@@ -72,7 +69,7 @@ const CarList = () => {
             ))}
           </div>
         </div>
-        {/* End of car listing */}
+        {/* End of Service listing */}
         <div className="grid place-items-center mt-8">
           <button
             data-aos="fade-up"
@@ -86,4 +83,4 @@ const CarList = () => {
   );
 };
 
-export default CarList;
+export default ServiceList;
