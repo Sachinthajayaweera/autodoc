@@ -11,7 +11,8 @@ const AddReview = () => {
 
   // Fetch reviews from the server
   useEffect(() => {
-    axios.get('http://localhost:5000/api/reviews')
+    axios
+      .get('http://localhost:5000/api/reviews')
       .then((response) => {
         setReviews(response.data);
       })
@@ -38,11 +39,14 @@ const AddReview = () => {
 
     if (editReviewId) {
       // Update an existing review
-      axios.put(`http://localhost:5000/api/reviews/${editReviewId}`, newReview)
+      axios
+        .put(`http://localhost:5000/api/reviews/${editReviewId}`, newReview)
         .then(() => {
-          setReviews(reviews.map(review =>
-            review.id === editReviewId ? { ...review, ...newReview } : review
-          ));
+          setReviews(
+            reviews.map((review) =>
+              review.id === editReviewId ? { ...review, ...newReview } : review
+            )
+          );
           setEditReviewId(null);
           setName('');
           setRating(0);
@@ -51,7 +55,8 @@ const AddReview = () => {
         .catch((error) => console.error('Error updating review:', error));
     } else {
       // Add a new review
-      axios.post('http://localhost:5000/api/reviews', newReview)
+      axios
+        .post('http://localhost:5000/api/reviews', newReview)
         .then((response) => {
           setReviews([response.data, ...reviews]); // Add new review to the top
           setName('');
@@ -65,9 +70,10 @@ const AddReview = () => {
   // Handle deleting a review
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this review?')) {
-      axios.delete(`http://localhost:5000/api/reviews/${id}`)
+      axios
+        .delete(`http://localhost:5000/api/reviews/${id}`)
         .then(() => {
-          setReviews(reviews.filter(review => review.id !== id));
+          setReviews(reviews.filter((review) => review.id !== id));
         })
         .catch((error) => console.error('Error deleting review:', error));
     }
@@ -87,15 +93,17 @@ const AddReview = () => {
     setDropdownVisible(dropdownVisible === id ? null : id);
   };
 
+  // Close dropdown menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => setDropdownVisible(null);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
   return (
     <div style={{ padding: '20px', backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
-      {/* Add Review Form */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: '20px',
-      }}>
+      {/* Add/Edit Review Form */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
         <form
           onSubmit={handleSubmit}
           style={{
@@ -177,7 +185,7 @@ const AddReview = () => {
       </div>
 
       {/* Reviews Section */}
-      <div className="container" style={{ padding: '20px' }}>
+      <div style={{ padding: '20px' }}>
         <h2 style={{ color: '#333', marginBottom: '15px', textAlign: 'center' }}>Reviews</h2>
         <div
           style={{
@@ -201,7 +209,10 @@ const AddReview = () => {
               {/* Three-dots menu */}
               <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
                 <span
-                  onClick={() => toggleDropdown(review.id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent dropdown auto-close
+                    toggleDropdown(review.id);
+                  }}
                   style={{ cursor: 'pointer', fontSize: '18px' }}
                 >
                   ⋮
@@ -217,8 +228,12 @@ const AddReview = () => {
                       zIndex: 10,
                     }}
                   >
-                    <button onClick={() => handleEdit(review)} style={{ display: 'block', padding: '10px', width: '100%' }}>Edit</button>
-                    <button onClick={() => handleDelete(review.id)} style={{ display: 'block', padding: '10px', width: '100%' }}>Delete</button>
+                    <button onClick={() => handleEdit(review)} style={{ display: 'block', padding: '10px', width: '100%' }}>
+                      Edit
+                    </button>
+                    <button onClick={() => handleDelete(review.id)} style={{ display: 'block', padding: '10px', width: '100%' }}>
+                      Delete
+                    </button>
                   </div>
                 )}
               </div>
@@ -240,7 +255,7 @@ const AddReview = () => {
               </div>
               <p style={{ marginTop: '10px', color: '#333' }}>{review.comment}</p>
               <p style={{ fontWeight: '600', marginTop: '5px' }}>{review.name}</p>
-              <small style={{ color: '#777' }}>{review.date}</small>
+              <small style={{ color: '#777' }}>{new Date(review.date).toLocaleDateString()}</small>
             </div>
           ))}
         </div>
