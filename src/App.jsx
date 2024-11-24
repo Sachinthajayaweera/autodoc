@@ -14,6 +14,7 @@ import Contact from "./components/Contact/Contact";
 import Testimonial from "./components/Testimonial/Testimonial";
 import Footer from "./components/Footer/Footer";
 import AddReview from './components/Testimonial/AddReview';
+import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 
 const App = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -57,6 +58,10 @@ const App = () => {
             </>
           } />
           <Route path="/add-review" element={<AddReview />} />
+          <Route path="/admindashboard" element={<AdminDashboard/>} />
+        </Routes>
+        <Routes>
+        <Route path="/admindashboard" element={<AdminDashboard/>} />
         </Routes>
       </div>
     </Router>

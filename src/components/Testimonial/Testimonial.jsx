@@ -2,7 +2,65 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
+const initialTestimonials = [
+  {
+    name: "Sachintha",
+    image: "https://picsum.photos/200?1",
+    description: "Excellent.",
+    aosDelay: "0",
+  },
+  {
+    name: "Tharusha",
+    image: "https://picsum.photos/200?2",
+    description: "Good.",
+    aosDelay: "300",
+  },
+  {
+    name: "Erandi",
+    image: "https://picsum.photos/200?3",
+    description: "Good Service.",
+    aosDelay: "1000",
+  },
+];
 
+const moreTestimonials = [
+  {
+    name: "Lakshan",
+    image: "https://picsum.photos/200?4",
+    description: "Very professional.",
+    aosDelay: "0",
+  },
+  {
+    name: "Sanduni",
+    image: "https://picsum.photos/200?5",
+    description: "Amazing experience!",
+    aosDelay: "300",
+  },
+  {
+    name: "Ruwan",
+    image: "https://picsum.photos/200?6",
+    description: "Highly recommended.",
+    aosDelay: "600",
+  },
+  {
+    name: "Dilini",
+    image: "https://picsum.photos/200?7",
+    description: "Quick and reliable.",
+    aosDelay: "900",
+  },
+  {
+    name: "Nadeesha",
+    image: "https://picsum.photos/200?8",
+    description: "Friendly staff.",
+    aosDelay: "1200",
+  },
+  {
+    name: "Amila",
+    image: "https://picsum.photos/200?9",
+    description: "Will come again!",
+    aosDelay: "1500",
+  },
+];
 
 const Testimonial = () => {
   const [testimonials, setTestimonials] = useState(initialTestimonials);
