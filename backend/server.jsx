@@ -20,86 +20,95 @@ const db = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "200123704050A",
-  database: process.env.DB_NAME || "vehicle_service",
   connectionLimit: 10,
 });
 
-
-
-
-// Auto-create tables
-const initializeTables = () => {
-  const createUsersTable = `
-    CREATE TABLE IF NOT EXISTS users (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email VARCHAR(255) UNIQUE NOT NULL,
-      password VARCHAR(255) NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`;
-
-  const createServicesTable = `
-    CREATE TABLE IF NOT EXISTS services (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      price DECIMAL(10, 2) NOT NULL
-    )`;
-
-  const createReviewsTable = `
-    CREATE TABLE IF NOT EXISTS reviews (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      icon VARCHAR(255),
-      rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-      comment TEXT NOT NULL,
-      date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`;
-
-  db.query(createUsersTable, (err) => {
+// Ensure the database and tables exist
+const initializeDatabase = () => {
+  db.getConnection((err, connection) => {
     if (err) {
-      console.error("Error creating 'users' table:", err.message);
-    } else {
-      console.log("'users' table ready.");
+      console.error("Error connecting to MySQL:", err.message);
+      return;
     }
-  });
+    console.log("Connected to MySQL");
 
-  db.query(createServicesTable, (err) => {
-    if (err) {
-      console.error("Error creating 'services' table:", err.message);
-    } else {
-      console.log("'services' table ready.");
-    }
-  });
+    // Create database if not exists
+    connection.query(`CREATE DATABASE IF NOT EXISTS auto_doc`, (err) => {
+      if (err) {
+        console.error("Error creating database:", err.message);
+        connection.release();
+        return;
+      }
+      console.log("Database ensured: auto_doc");
 
-  db.query(createReviewsTable, (err) => {
-    if (err) {
-      console.error("Error creating 'reviews' table:", err.message);
-    } else {
-      console.log("'reviews' table ready.");
-    }
+      // Use the created database
+      connection.changeUser({ database: "auto_doc" }, (err) => {
+        if (err) {
+          console.error("Error switching to database:", err.message);
+          connection.release();
+          return;
+        }
+        console.log("Using database: auto_doc");
+
+        // Create 'users' table if not exists
+        const createUsersTable = `
+          CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL
+          )`;
+        connection.query(createUsersTable, (err) => {
+          if (err) {
+            console.error("Error creating users table:", err.message);
+          } else {
+            console.log("Table ensured: users");
+          }
+        });
+
+        // Create 'services' table if not exists
+        const createServicesTable = `
+          CREATE TABLE IF NOT EXISTS services (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            price DECIMAL(10, 2) NOT NULL
+          )`;
+        connection.query(createServicesTable, (err) => {
+          if (err) {
+            console.error("Error creating services table:", err.message);
+          } else {
+            console.log("Table ensured: services");
+          }
+        });
+
+        // Create 'reviews' table if not exists
+        const createReviewsTable = `
+          CREATE TABLE IF NOT EXISTS reviews (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            icon VARCHAR(255),
+            rating INT NOT NULL,
+            comment TEXT NOT NULL,
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          )`;
+        connection.query(createReviewsTable, (err) => {
+          if (err) {
+            console.error("Error creating reviews table:", err.message);
+          } else {
+            console.log("Table ensured: reviews");
+          }
+        });
+
+        connection.release();
+      });
+    });
   });
 };
 
+// Initialize database and tables
+initializeDatabase();
 
 
-
-// Connect to MySQL
-db.getConnection((err) => {
-  if (err) {
-    console.error("Error connecting to MySQL:", err.message);
-    return;
-  }
-  console.log("Connected to MySQL database");
-  initializeTables(); // Initialize tables on connection
-});
-
-// Check database connection for each request
-app.use((req, res, next) => {
-  if (!db) {
-    return res.status(500).json({ message: "Database connection failed" });
-  }
-  next();
-});
 
 // Auth Middleware (authMiddleware.js)
 const SECRET_KEY = "14625";
