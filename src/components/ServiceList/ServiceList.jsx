@@ -1,30 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import whiteCar from "../../assets/white-car.png";
 import car2 from "../../assets/car5.png";
 import car3 from "../../assets/car6.png";
 
-const carList = [
+const serviceList = [
   {
-    name: "BMW UX",
-    price: 100,
+    name: "Car Wash",
+    price: 500,
     image: whiteCar,
     aosDelay: "0",
   },
   {
-    name: "KIA UX",
-    price: 140,
+    name: "Engine Checkup",
+    price: 3000,
     image: car2,
     aosDelay: "500",
   },
   {
-    name: "BMW UX",
-    price: 100,
+    name: "Tire Replacement",
+    price: 3500,
     image: car3,
     aosDelay: "1000",
   },
+  {
+    name: "Interior Cleaning",
+    price: 7500,
+    image: whiteCar,
+    aosDelay: "1500",
+  },
+  {
+    name: "Oil Change",
+    price: 2500,
+    image: car2,
+    aosDelay: "2000",
+  },
+  {
+    name: "Brake Service",
+    price: 4500,
+    image: car3,
+    aosDelay: "2500",
+  },
+  {
+    name: "Battery Replacement",
+    price: 6500,
+    image: whiteCar,
+    aosDelay: "3000",
+  },
+  {
+    name: "Suspension Repair",
+    price: 9300,
+    image: car2,
+    aosDelay: "3500",
+  },
+  {
+    name: "Alignment Service",
+    price: 10000,
+    image: car3,
+    aosDelay: "4000",
+  },
 ];
 
-const CarList = () => {
+const ServiceList = () => {
+  const [visibleCount, setVisibleCount] = useState(3); // Initial visible card count
+
+  const loadMoreServices = () => {
+    setVisibleCount(visibleCount + 6); // Load 6 more cards
+  };
+
   return (
     <div className="pb-24">
       <div className="container">
@@ -35,14 +77,11 @@ const CarList = () => {
         >
           Our Services
         </h1>
-        <p data-aos="fade-up" aos-delay="400" className="text-sm pb-10">
-          efekdlejeojpldjepofjpldfjepfoejpojfpweofjweplejfepofjwpowejp
-          dfgdgpsdgksdgpsdg
-        </p>
-        {/* Car listing */}
+
+        {/* Service listing */}
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16">
-            {carList.map((data) => (
+            {serviceList.slice(0, visibleCount).map((data) => (
               <div
                 key={data.name}
                 data-aos="fade-up"
@@ -52,7 +91,7 @@ const CarList = () => {
                 <div className="w-full h-[120px]">
                   <img
                     src={data.image}
-                    alt=""
+                    alt={data.name}
                     className="w-full h-[120px] object-contain sm:translate-x-8 group-hover:sm:translate-x-16 duration-700"
                   />
                 </div>
@@ -61,18 +100,32 @@ const CarList = () => {
                     {data.name}
                   </h1>
                   <div className="flex justify-between items-center text-xl font-semibold">
-                    <p>${data.price}/Day</p>
-                    <a href="#" className="text-[#C30010] hover:underline">Details</a>
+                    <p>{data.price}LKR</p>
+                    <a href="#" className="text-[#C30010] hover:underline">
+                      Details
+                    </a>
                   </div>
                 </div>
-                <p className="text-xl font-semibold absolute top-0 left-3">
-                  12Km
-                </p>
               </div>
             ))}
           </div>
         </div>
-        {/* End of car listing */}
+        {/* End of Service listing */}
+
+        {/* View More Button */}
+        {visibleCount < serviceList.length && (
+          <div className="grid place-items-center mt-8">
+            <button
+              onClick={loadMoreServices}
+              data-aos="fade-up"
+              className="button-outline border-2 border-[#C30010] text-[#C30010] hover:bg-[#C30010] hover:text-white duration-300 py-2 px-6 rounded-md"
+            >
+              View More
+            </button>
+          </div>
+        )}
+
+        {/* Get Started Button */}
         <div className="grid place-items-center mt-8">
           <button
             data-aos="fade-up"
@@ -86,4 +139,4 @@ const CarList = () => {
   );
 };
 
-export default CarList;
+export default ServiceList;
