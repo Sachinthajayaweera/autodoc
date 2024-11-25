@@ -23,8 +23,27 @@ const LoginModal = ({ setUser }) => {
     setIsLoading(true); // Show loading spinner or feedback
 
     try {
+
+ // Hardcoded admin credentials check
+ if (!isSignup && email === "admin@gmail.com" && password === "admin") {
+  alert("Admin login successful!");
+  navigate("/service-bill-generator"); // Navigate to the service bill generator page
+  return; // Exit the function to prevent further execution
+}
+
+
+
       const endpoint = isSignup ? "signup" : "login";
       const body = isSignup ? { name, email, password } : { email, password };
+
+
+
+
+
+
+
+
+
 
       const response = await fetch(`http://localhost:5000/api/${endpoint}`, {
         method: "POST",

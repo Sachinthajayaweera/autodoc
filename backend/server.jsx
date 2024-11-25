@@ -19,8 +19,8 @@ app.use(helmet()); // Adds security-related HTTP headers
 const db = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "Sachi@14625",
-  database: process.env.DB_NAME || "service_station",
+  password: process.env.DB_PASSWORD || "200123704050A",
+  database: process.env.DB_NAME || "vehicle_service",
   connectionLimit: 10,
 });
 
@@ -58,6 +58,56 @@ const authMiddleware = (req, res, next) => {
     res.status(401).json({ message: "Invalid or expired token" });
   }
 };
+
+
+// Services Routes
+app.get("/api/services", (req, res) => {
+  db.query("SELECT * FROM services", (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(results);
+  });
+});
+
+app.post("/api/services", (req, res) => {
+  const { name, price } = req.body;
+  db.query("INSERT INTO services (name, price) VALUES (?, ?)", [name, price], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(201).json({ id: results.insertId, name, price });
+  });
+});
+
+app.put("/api/services/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, price } = req.body;
+  db.query("UPDATE services SET name = ?, price = ? WHERE id = ?", [name, price, id], (err) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: "Service updated successfully." });
+  });
+});
+
+app.delete("/api/services/:id", (req, res) => {
+  const { id } = req.params;
+  db.query("DELETE FROM services WHERE id = ?", [id], (err) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: "Service deleted successfully." });
+  });
+});
+
+
+
+
+
+
+
+
 
 // User Controller (userController.js)
 const signup = async (req, res) => {

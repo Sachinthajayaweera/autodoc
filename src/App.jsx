@@ -16,6 +16,9 @@ import Footer from "./components/Footer/Footer";
 import Profile from "./components/User/Profile";
 import LoginModal from "./components/Navbar/LoginModal";
 import AddReview from "./components/Testimonial/AddReview";
+import ServiceBillGenerator from "./components/serviceBillGenerator/serviceBillGenerator";
+
+
 
 const App = () => {
   // Dark mode state
@@ -130,6 +133,11 @@ const App = () => {
               </>
             }
           />
+
+
+
+          {/* Service Bill Generator route */}
+          <Route path="/service-bill-generator" element={<ServiceBillGenerator />} />
 
           {/* Add Review route */}
           <Route path="/add-review" element={<AddReview />} />
