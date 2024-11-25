@@ -24,6 +24,65 @@ const db = mysql.createPool({
   connectionLimit: 10,
 });
 
+
+
+
+// Auto-create tables
+const initializeTables = () => {
+  const createUsersTable = `
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`;
+
+  const createServicesTable = `
+    CREATE TABLE IF NOT EXISTS services (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      price DECIMAL(10, 2) NOT NULL
+    )`;
+
+  const createReviewsTable = `
+    CREATE TABLE IF NOT EXISTS reviews (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      icon VARCHAR(255),
+      rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+      comment TEXT NOT NULL,
+      date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`;
+
+  db.query(createUsersTable, (err) => {
+    if (err) {
+      console.error("Error creating 'users' table:", err.message);
+    } else {
+      console.log("'users' table ready.");
+    }
+  });
+
+  db.query(createServicesTable, (err) => {
+    if (err) {
+      console.error("Error creating 'services' table:", err.message);
+    } else {
+      console.log("'services' table ready.");
+    }
+  });
+
+  db.query(createReviewsTable, (err) => {
+    if (err) {
+      console.error("Error creating 'reviews' table:", err.message);
+    } else {
+      console.log("'reviews' table ready.");
+    }
+  });
+};
+
+
+
+
 // Connect to MySQL
 db.getConnection((err) => {
   if (err) {
@@ -31,6 +90,7 @@ db.getConnection((err) => {
     return;
   }
   console.log("Connected to MySQL database");
+  initializeTables(); // Initialize tables on connection
 });
 
 // Check database connection for each request
