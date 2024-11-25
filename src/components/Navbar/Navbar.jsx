@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { BiSolidSun, BiSolidMoon } from "react-icons/bi";
 import { HiMenuAlt3, HiMenuAlt1 } from "react-icons/hi";
 import { FaUserCircle } from "react-icons/fa";
+import RespensiveMenu from"./ResponsiveMenu";
 
-const Navlinks = [
+export const Navlinks = [
   { id: 1, name: "HOME", link: "/" },
   { id: 2, name: "SERVICES", link: "/#services" },
   { id: 3, name: "ABOUT", link: "/#about" },
@@ -164,6 +165,7 @@ const Navbar = ({ theme, setTheme, user, setUser }) => {
           </ul>
         </div>
       )}
+      <RespensiveMenu showMenu={showMenu}/>
     </div>
   );
 };
