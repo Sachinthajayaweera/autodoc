@@ -135,6 +135,15 @@ const Navbar = ({ theme, setTheme, user, setUser }) => {
                   >
                     Profile
                   </button>
+                  <button
+                    onClick={() => {
+                      navigate("");
+                      toggleMenu();
+                    }}
+                    className="text-lg font-medium hover:text-[#C30010] w-full text-left"
+                  >
+                    Vehicle
+                  </button>
                 </li>
                 <li>
                   <button
