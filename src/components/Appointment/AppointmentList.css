@@ -1,0 +1,120 @@
+.appointment-list {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .appointment-list h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  .appointment-list table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .appointment-list thead {
+    background-color: #2c3e50;
+    color: white;
+  }
+  
+  .appointment-list thead th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+  
+  .appointment-list tbody tr {
+    transition: background-color 0.3s ease;
+  }
+  
+  .appointment-list tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+  
+  .appointment-list tbody tr:hover {
+    background-color: #e9ecef;
+  }
+  
+  .appointment-list td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .appointment-list td input,
+  .appointment-list td select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .appointment-list button {
+    padding: 6px 12px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .appointment-list button:first-child {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .appointment-list button:first-child:hover {
+    background-color: #2980b9;
+  }
+  
+  .appointment-list button:last-child {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .appointment-list button:last-child:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Empty state styling */
+  .appointment-list p {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    padding: 20px;
+  }
+  
+  /* Responsive design */
+  @media screen and (max-width: 768px) {
+    .appointment-list table {
+      font-size: 12px;
+    }
+  
+    .appointment-list td,
+    .appointment-list th {
+      padding: 8px 10px;
+    }
+  
+    .appointment-list button {
+      padding: 4px 8px;
+      margin: 0 2px;
+      font-size: 11px;
+    }
+  }

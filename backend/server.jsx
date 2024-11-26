@@ -19,7 +19,7 @@ app.use(helmet()); // Adds security-related HTTP headers
 const db = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "200123704050A",
+  password: process.env.DB_PASSWORD || "Tharushaishan*5538",
   connectionLimit: 10,
 });
 
@@ -80,6 +80,28 @@ const initializeDatabase = () => {
             console.log("Table ensured: services");
           }
         });
+
+
+
+         // Create 'appointments' table
+         const createAppointmentsTable = `
+         CREATE TABLE IF NOT EXISTS appointments (
+           id INT AUTO_INCREMENT PRIMARY KEY,
+           name VARCHAR(255) NOT NULL,
+           contact VARCHAR(15) NOT NULL,
+           email VARCHAR(255),
+           vehicleNo VARCHAR(255) NOT NULL,
+           vehicleModel VARCHAR(255) NOT NULL,
+           serviceType VARCHAR(255) NOT NULL,
+           date DATE NOT NULL,
+           time TIME NOT NULL
+         )`;
+       connection.query(createAppointmentsTable);
+
+
+
+
+
 
         // Create 'reviews' table if not exists
         const createReviewsTable = `
@@ -350,6 +372,99 @@ app.put("/api/reviews/:id", (req, res) => {
     res.json({ message: "Review updated successfully" });
   });
 });
+
+
+
+
+
+
+// APPOINMENT routes
+app.get("/appointments", (req, res) => {
+  const sql = "SELECT * FROM appointments";
+  db.query(sql, (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+app.post("/appointments", (req, res) => {
+  const {
+    name,
+    contact,
+    email,
+    vehicleNo,
+    vehicleModel,
+    serviceType,
+    date,
+    time,
+  } = req.body;
+  const sql = "INSERT INTO appointments SET ?";
+  const data = {
+    name,
+    contact,
+    email,
+    vehicleNo,
+    vehicleModel,
+    serviceType,
+    date,
+    time,
+  };
+  db.query(sql, data, (err, results) => {
+    if (err) throw err;
+    res.json({ id: results.insertId, ...data });
+  });
+});
+
+app.put("/appointments/:id", (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    contact,
+    email,
+    vehicleNo,
+    vehicleModel,
+    serviceType,
+    date,
+    time,
+  } = req.body;
+  const sql = "UPDATE appointments SET ? WHERE id = ?";
+  const data = {
+    name,
+    contact,
+    email,
+    vehicleNo,
+    vehicleModel,
+    serviceType,
+    date,
+    time,
+  };
+  db.query(sql, [data, id], (err, results) => {
+    if (err) throw err;
+    res.json({ id, ...data });
+  });
+});
+
+app.delete("/appointments/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = "DELETE FROM appointments WHERE id = ?";
+  db.query(sql, id, (err, results) => {
+    if (err) throw err;
+    res.json({ message: "Appointment deleted", id });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // User Routes
 const userRoutes = express.Router();

@@ -73,6 +73,16 @@ const Navbar = ({ theme, setTheme, user, setUser }) => {
                   >
                     Profile
                   </button>
+
+                  <button
+                    onClick={() => {
+                      navigate("/appointments");
+                      setShowDropdown(false);
+                    }}
+                    className="block w-full text-left py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Appointment
+                  </button>
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -135,6 +145,16 @@ const Navbar = ({ theme, setTheme, user, setUser }) => {
                     className="text-lg font-medium hover:text-[#C30010] w-full text-left"
                   >
                     Profile
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      navigate("/appointments");
+                      setShowDropdown(false);
+                    }}
+                    className="block w-full text-left py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Appointment
                   </button>
                 </li>
                 <li>

@@ -17,7 +17,7 @@ import Profile from "./components/User/Profile";
 import LoginModal from "./components/Navbar/LoginModal";
 import AddReview from "./components/Testimonial/AddReview";
 import ServiceBillGenerator from "./components/serviceBillGenerator/serviceBillGenerator";
-
+import AppointmentPage from "./components/Appointment/AppointmentPage";
 
 
 const App = () => {
@@ -146,6 +146,12 @@ const App = () => {
           <Route
             path="/profile"
             element={<ProtectedRoute element={() => <Profile user={user} />} />}
+          />
+
+           {/* Appointment page route - protected */}
+           <Route
+            path="/appointments"
+            element={<ProtectedRoute element={() => <AppointmentPage />} />}
           />
 
           {/* Login page route */}

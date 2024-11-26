@@ -1,0 +1,86 @@
+.appointments-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 30px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+  
+  .appointments-page h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    position: relative;
+    padding-bottom: 15px;
+  }
+  
+  .appointments-page h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: #3498db;
+    border-radius: 2px;
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    .appointments-page {
+      padding: 20px 10px;
+    }
+  
+    .appointments-page h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+  
+    .appointments-page h1::after {
+      width: 70px;
+    }
+  }
+  
+  /* Subtle Background Texture */
+  .appointments-page {
+    background-image: linear-gradient(
+      to right, 
+      rgba(255,255,255,0.95), 
+      rgba(255,255,255,0.95)
+    ), 
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23dddddd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  /* Smooth Transitions */
+  .appointments-page,
+  .appointments-page h1,
+  .appointments-page h1::after {
+    transition: all 0.3s ease;
+  }
+  
+  /* Print Styles */
+  @media print {
+    .appointments-page {
+      background: white;
+      padding: 20px;
+      max-width: none;
+    }
+  
+    .appointments-page h1 {
+      text-align: left;
+    }
+  
+    .appointments-page h1::after {
+      display: none;
+    }
+  }
+  
+  /* Accessibility Enhancements */
+  .appointments-page:focus-within {
+    outline: 2px solid rgba(52, 152, 219, 0.3);
+    outline-offset: 5px;
+  }
