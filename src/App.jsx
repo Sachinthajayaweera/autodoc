@@ -18,7 +18,7 @@ import LoginModal from "./components/Navbar/LoginModal";
 import AddReview from "./components/Testimonial/AddReview";
 import ServiceBillGenerator from "./components/serviceBillGenerator/serviceBillGenerator";
 import AppointmentPage from "./components/Appointment/AppointmentPage";
-
+import VehicleList from "./components/Vehicle/VehicleList";
 
 const App = () => {
   // Dark mode state
@@ -142,6 +142,7 @@ const App = () => {
           {/* Add Review route */}
           <Route path="/add-review" element={<AddReview />} />
 
+
           {/* Profile page route - protected */}
           <Route
             path="/profile"
@@ -165,6 +166,11 @@ const App = () => {
               )
             }
           />
+
+          {/* vehicle routes */}
+          <Route path="/vehicle" element={<VehicleList />} />
+        
+        
         </Routes>
 
         {/* Footer is always visible */}

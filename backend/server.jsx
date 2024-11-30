@@ -19,7 +19,7 @@ app.use(helmet()); // Adds security-related HTTP headers
 const db = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "Tharushaishan*5538",
+  password: process.env.DB_PASSWORD || "200123704050A",
   connectionLimit: 10,
 });
 
@@ -81,6 +81,25 @@ const initializeDatabase = () => {
           }
         });
 
+        // Create 'vehicle' table if not exists
+        const createVehicleTable = `
+          CREATE TABLE IF NOT EXISTS vehicles (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            vehicleNo VARCHAR(20) NOT NULL,
+            category VARCHAR(50),
+            model VARCHAR(50),
+            color VARCHAR(20),
+            engineCapacity INT,
+            registrationDate DATE,
+            image VARCHAR(255)
+        )`;
+        connection.query(createVehicleTable, (err) => {
+          if (err) {
+            console.error("Error creating vehicles table:", err.message);
+          } else {
+            console.log("Table ensured: vehicles");
+          }
+        });
 
 
          // Create 'appointments' table
@@ -192,6 +211,141 @@ app.delete("/api/services/:id", (req, res) => {
   });
 });
 
+
+
+// Vehicle Routes
+
+// 1. Add a vehicle
+app.post("/vehicles", (req, res) => {
+  const {
+    vehicleNo,
+    category,
+    model,
+    color,
+    engineCapacity,
+    registrationDate,
+    image,
+  } = req.body;
+
+  if (
+    !vehicleNo ||
+    !category ||
+    !model ||
+    !color ||
+    !engineCapacity ||
+    !registrationDate
+  ) {
+    return res.status(400).send("All fields are required.");
+  }
+
+  const query =
+    "INSERT INTO vehicles (vehicleNo, category, model, color, engineCapacity, registrationDate, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  db.query(
+    query,
+    [
+      vehicleNo,
+      category,
+      model,
+      color,
+      engineCapacity,
+      registrationDate,
+      image,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error adding vehicle to the database.");
+      } else {
+        res.status(201).json({ id: result.insertId, ...req.body });
+      }
+    }
+  );
+});
+
+// 2. Get all vehicles
+app.get("/vehicles", (req, res) => {
+  const query = "SELECT * FROM vehicles";
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error fetching vehicles.");
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// 3. Update a vehicle (Fix: properly update the existing record)
+app.put("/vehicles/:id", (req, res) => {
+  const { id } = req.params;
+  const {
+    vehicleNo,
+    category,
+    model,
+    color,
+    engineCapacity,
+    registrationDate,
+    image,
+  } = req.body;
+
+  // Ensure the vehicle exists first
+  db.query("SELECT * FROM vehicles WHERE id = ?", [id], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Error checking vehicle existence", error: err });
+    }
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Vehicle not found" });
+    }
+
+    // If the vehicle exists, proceed with the update
+    const query =
+      "UPDATE vehicles SET vehicleNo = ?, category = ?, model = ?, color = ?, engineCapacity = ?, registrationDate = ?, image = ? WHERE id = ?";
+    db.query(
+      query,
+      [
+        vehicleNo,
+        category,
+        model,
+        color,
+        engineCapacity,
+        registrationDate,
+        image,
+        id,  // Use the vehicle's ID to update the correct record
+      ],
+      (err) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: "Error updating vehicle", error: err });
+        }
+        res.status(200).json({
+          id,
+          vehicleNo,
+          category,
+          model,
+          color,
+          engineCapacity,
+          registrationDate,
+          image,
+        });
+      }
+    );
+  });
+});
+
+// 4. Delete a vehicle (Fix: Delete from database)
+app.delete("/vehicles/:id", (req, res) => {
+  const { id } = req.params;
+  const query = "DELETE FROM vehicles WHERE id = ?";
+  db.query(query, [id], (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error deleting vehicle.");
+    } else {
+      res.send("Vehicle deleted successfully.");
+    }
+  });
+});
 
 
 
