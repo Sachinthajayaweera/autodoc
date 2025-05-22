@@ -105,7 +105,8 @@ const App = () => {
   };
 
   return (
-    <Router>
+    <Router basename="/autodoc">
+
       <div className="bg-white dark:bg-black dark:text-white text-black overflow-x-hidden">
         {/* Navbar is always visible */}
         <Navbar
