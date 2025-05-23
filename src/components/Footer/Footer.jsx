@@ -70,7 +70,10 @@ const Footer = () => {
                 </h1>
                 <ul className="flex flex-col gap-3">
                   {FooterLinks.map((link) => (
-                    <li className="cursor-pointer hover:translate-x-1 duration-300 hover:!text-[#C30010] space-x-1 text-gray-500 dark:text-gray-200">
+                    <li
+                      key={`important-${link.title}`}
+                      className="cursor-pointer hover:translate-x-1 duration-300 hover:!text-[#C30010] space-x-1 text-gray-500 dark:text-gray-200"
+                    >
                       <span>&#11162;</span>
                       <span>{link.title}</span>
                     </li>
@@ -85,7 +88,10 @@ const Footer = () => {
                 </h1>
                 <ul className="flex flex-col gap-3">
                   {FooterLinks.map((link) => (
-                    <li className="cursor-pointer hover:translate-x-1 duration-300 hover:!text-[#C30010] space-x-1 text-gray-500 dark:text-gray-200">
+                    <li
+                      key={`links-${link.title}`}
+                      className="cursor-pointer hover:translate-x-1 duration-300 hover:!text-[#C30010] space-x-1 text-gray-500 dark:text-gray-200"
+                    >
                       <span>&#11162;</span>
                       <span>{link.title}</span>
                     </li>
@@ -100,7 +106,10 @@ const Footer = () => {
                 </h1>
                 <ul className="flex flex-col gap-3">
                   {FooterLinks.map((link) => (
-                    <li className="cursor-pointer hover:translate-x-1 duration-300 hover:!text-[#C30010] space-x-1 text-gray-500 dark:text-gray-200">
+                    <li
+                      key={`location-${link.title}`}
+                      className="cursor-pointer hover:translate-x-1 duration-300 hover:!text-[#C30010] space-x-1 text-gray-500 dark:text-gray-200"
+                    >
                       <span>&#11162;</span>
                       <span>{link.title}</span>
                     </li>
