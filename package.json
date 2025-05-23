@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "homepage": "https://sachinthajayaweera.github.io/autodoc",
-
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -13,7 +12,6 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
-
   },
   "dependencies": {
     "ajv": "^8.17.1",
@@ -25,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
     "react-router-dom": "^7.0.0",
+    "react-scroll": "^1.9.3",
     "react-toastify": "^10.0.6"
   },
   "devDependencies": {

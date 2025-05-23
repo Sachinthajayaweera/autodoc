@@ -4,22 +4,23 @@ import { BiSolidSun, BiSolidMoon } from "react-icons/bi";
 import { HiMenuAlt3, HiMenuAlt1 } from "react-icons/hi";
 import { FaUserCircle } from "react-icons/fa";
 import RespensiveMenu from"./ResponsiveMenu";
+import { Link as ScrollLink } from "react-scroll";
+
 
 export const Navlinks = [
   { id: 1, name: "HOME", link: "/" },
-  { id: 2, name: "SERVICES", link: "/#services" },
-  { id: 3, name: "ABOUT", link: "/#about" },
-  { id: 4, name: "CONTACT US", link: "/#contact-us" },
+  { id: 2, name: "SERVICES", link: "services" },
+  { id: 3, name: "ABOUT", link: "about" },
+  { id: 4, name: "CONTACT US", link: "contact-us" },
 ];
 
-const Navbar = ({ theme, setTheme, user, setUser }) => {
+const Navbar = ({ theme, setTheme, user, setUser, onLogout }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
-  const toggleMenu = () => setShowMenu((prev) => !prev);
-
-  const toggleDropdown = () => setShowDropdown((prev) => !prev);
+  const toggleMenu = () => setShowMenu(!showMenu);
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   const handleLogout = () => {
     setUser({ name: "", email: "", loggedIn: false });
@@ -39,14 +40,18 @@ const Navbar = ({ theme, setTheme, user, setUser }) => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
           {Navlinks.map(({ id, name, link }) => (
-            <Link
+            <ScrollLink
               key={id}
-              to={link}
-              className="text-lg font-medium hover:text-[#C30010] py-2 hover:border-b-2 hover:border-[#C30010] transition-colors duration-300"
+              to={link.replace("/#", "")} // "services", "about", etc.
+              smooth={true}
+              duration={500}
+              offset={-100} // adjust this if your navbar overlaps content
+              className="cursor-pointer text-lg font-medium hover:text-[#C30010] py-2 hover:border-b-2 hover:border-[#C30010] transition-colors duration-300"
             >
               {name}
-            </Link>
+            </ScrollLink>
           ))}
+
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -130,82 +135,15 @@ const Navbar = ({ theme, setTheme, user, setUser }) => {
       </div>
 
       {/* Mobile Menu */}
-      {showMenu && (
-        <div className="bg-white dark:bg-black dark:text-white shadow-md p-4 md:hidden">
-          <ul className="flex flex-col gap-4">
-            {Navlinks.map(({ id, name, link }) => (
-              <li key={id}>
-                <Link
-                  to={link}
-                  onClick={toggleMenu}
-                  className="text-lg font-medium hover:text-[#C30010]"
-                >
-                  {name}
-                </Link>
-              </li>
-            ))}
-            {user.loggedIn ? (
-              <>
-                <li>
-                  <button
-                    onClick={() => {
-                      navigate("/profile");
-                      toggleMenu();
-                    }}
-                    className="text-lg font-medium hover:text-[#C30010] w-full text-left"
-                  >
-                    Profile
-                  </button>
+      
+      <RespensiveMenu
+        showMenu={showMenu}
+        user={user}
+        setUser={setUser}
+        onLogout={handleLogout}
+        onCloseMenu={() => setShowMenu(false)}
+      />
 
-                  <button
-                    onClick={() => {
-                      navigate("/vehicle");
-                      setShowDropdown(false);
-                    }}
-                    className="block w-full text-left py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    Vehicle
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      navigate("/appointments");
-                      setShowDropdown(false);
-                    }}
-                    className="block w-full text-left py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    Appointment
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      toggleMenu();
-                    }}
-                    className="text-lg font-medium hover:text-[#C30010] w-full text-left"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </>
-            ) : (
-              <li>
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                    toggleMenu();
-                  }}
-                  className="bg-[#C30010] text-white px-4 py-2 rounded-md hover:bg-[#a0000d] transition-colors w-full text-center"
-                >
-                  Login
-                </button>
-              </li>
-            )}
-          </ul>
-        </div>
-      )}
-      <RespensiveMenu showMenu={showMenu}/>
     </div>
   );
 };
